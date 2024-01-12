@@ -1,8 +1,8 @@
 % Example Script
 addpath('../')
 ca = readmatrix('Calcium.csv'); %load calcium file
-time = ca(:,1);%extract time as it's own variable and remove from the matrix
-ca(:,1) = [];
+time = ca(:,2);%extract time as it's own variable and remove from the matrix
+ca(:,1:2) = [];
 
 %set presets: 
 opts.thresholdsetting = 'Degree';
@@ -10,7 +10,6 @@ opts.avDegree = 4;
 opts.figs = 1; %I do want figures
 
 %identify oscillation start and end times
-figure(7), plot(time, mean(calcium')) %plot calcium
 [start_indx, end_indx] = identify_oscillations(ca, time, 0) %0 if you want to manually select beginning and end
 xline(start_indx, 'label','This is where we start')
 xline(end_indx, 'label','This is where we end')
@@ -36,4 +35,4 @@ xline(end_indx, 'label','This is where we end')
     ylabel('Normalized Ca^{2+} Fluoresence')
     set(gca, 'box','off')
 
-     end
+     
