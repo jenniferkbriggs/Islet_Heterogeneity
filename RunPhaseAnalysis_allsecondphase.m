@@ -1,13 +1,8 @@
-function [averagephase, sorted_highphase, finalphase]  = RunPhaseAnalysis_individual(calcium, start_indx, end_indx);
+function [averagephase, sorted_highphase]  = RunPhaseAnalysis_allsecondphase(calcium)
 %% by Jennifer Briggs 02/28/2022
 % This function will run phase analysis given a calcium array (time x
 % calcium for each cell). For this version of phase analysis, we only look
-% at the depolarization phase of the calcium oscillation. To do this we
-% must first input start and end times (note that these times are the
-% data indices, not actual times). 
-
-% !!!! If you want to automatically locate  these, run
-% "identify_oscillations.m" !!!
+% at the entire second phase of the calcium oscillation.
 
 % The final result will give an array with the phase lag for each cell at
 % each oscillation
@@ -15,19 +10,14 @@ function [averagephase, sorted_highphase, finalphase]  = RunPhaseAnalysis_indivi
 % INPUTS: 
 % -- ca: an array containing the calcium timeseries for the islet.
 %               With the rows corresponding to individual time points and the columns
-%               corresponding to different cells (see example if needed)
-% -- start_indx: array with the index for the start time of each
-% oscillation
-% -- end_indx : array with the index for the peak of each oscillation
-% ----:  opts.figs: boolean - set to 1 if you want matlab to make figures or 0
-%       if not. Default is 1
+
 
 % OUTPUTS:
 % -- averagephase: average phase (number are indices not time) for each
 % cell
 % -- sorted_highpase: cells sorted from high to low phase for each
 % oscillation
-% -- final_phase: phase value for each cell for each oscillation. 
+
 
 
 %% Wave origin analysis
@@ -42,19 +32,15 @@ function [averagephase, sorted_highphase, finalphase]  = RunPhaseAnalysis_indivi
     calcium_demeaned = (calcium-min(calcium))./(max(calcium)-min(calcium)); 
     %Lets normalize all calcium ranges, assuming the average flouresence value for a cell is a
     %reflection on the staining rather than the actual cell's properties
-    cashort = [];
 
         
-          
-   for i = 1:length(end_indx)
-    % run phase analysis for each oscillation
-    cashort =  [calcium_demeaned(start_indx(i):end_indx(i),:)];
+
     step = .005; %this gives how much to interpolate by
-    xq = 1:step:size(cashort,1)+1;
-    vq1 = interp1(1:size(cashort,1),cashort,xq); %may need to investigate a better way to do this
+    xq = 1:step:size(calcium_demeaned,1)+1;
+    vq1 = interp1(1:size(calcium_demeaned,1),calcium_demeaned,xq); %may need to investigate a better way to do this
     %vq2 = spline(1:size(cashort,1),cashort',xq);
     
-    numcells=size(cashort,2);
+    numcells=size(calcium_demeaned,2);
 
     calciumT = (vq1);                           % new calcium time course
     [row,col] = find(isnan(calciumT)); %remove NaN's
@@ -97,13 +83,12 @@ function [averagephase, sorted_highphase, finalphase]  = RunPhaseAnalysis_indivi
     %index in order from high phase (start earlier) to low
     %phase (start later)
     [phasevecsort_init, cells_sortedinit] = sort(newmaxCLvec); 
-    sorted_highphase(i,:)= cells_sortedinit;
-    phasevecsort(i,:) = phasevecsort_init;
-    finalphase(i,:) = newmaxCLvec;
+    sorted_highphase= cells_sortedinit;
+    phasevecsort = phasevecsort_init;
+    averagephase = newmaxCLvec;
     
-   end
+   
     %% find the average phase for all oscillations
-    averagephase = mean(finalphase);
 
 end
 
