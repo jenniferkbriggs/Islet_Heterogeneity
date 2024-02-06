@@ -22,8 +22,7 @@ function [N, Adj, kpercent, histArrayPercShort,pval,Rij,s] = links(calciumT, Thr
 % histArrayPercShort - histogram of degrees without any 0 degrees
 % pval               - significance p-value of each correlation
 % Rij                - Correlation coefficient matrix
-% s                  - How close the degree distribution is to a
-% "scale-free" distribution
+% s                  - 
 
 if ~exist('fig')
     fig = 1;
