@@ -1,9 +1,5 @@
 # Islet_Heterogeneity
-This repository contains sample code for studying islet heterogeneity. Main scripts include network/hub cell analysis, wave/phase analysis, and first responder analysis. Code is available in Matlab and Python. All code was written by Jennifer Briggs (2024) and Richard Benninger's lab at the University of Colorado Anschutz Medical Campus.
-
-Note: The python code is executed under virtual environment for version control purposes. The best way to avoid bugs is to run it in the same virtual environment.
-The first time you clone this code, run: *conda env create -f environment.yml* in the terminal.
-Then, before every run type *conda activate ./envs* to activate the environment before you run the files.
+This repository contains sample code for studying islet heterogeneity. Main scripts include network/hub cell analysis, wave/phase analysis, and first responder analysis. Code is available in Matlab. All code was written by Jennifer Briggs (2024) and Richard Benninger's lab at the University of Colorado Anschutz Medical Campus.
 
 ## Examples 
 Examples to run all scripts and an example calcium file are found under the folder "examples"
@@ -11,18 +7,13 @@ Examples to run all scripts and an example calcium file are found under the fold
 ## Network Analysis in Matlab
 To run general network analysis, you will use the function *RunNetworkAnalysis.m* 
 
-If you want to determine the optimal threshold for getting a log-log plot, input calcium into *findoptRth*. Please note, if you want to have the threshold based on number of links, please email me and I will add this to the code!
+If you want to determine the optimal threshold for getting a log-log plot, input calcium into *findoptRth*.
 
-## Network analysis in Python
-### General Network Analysis: **Run_Network.py**.
-The first section (lines 5-17) is title options for you to change. This is wheter you define whether you would like figures, where to save the file to. ]
+## Phase Analysis in Matlab
+To run phase analysis, you must decide which method to use. *RunPhaseAnalysis_indiviual.m* looks at each individual oscillation and determines the phase of each cell during the depolarization stage only. *RunPhaseAnalysis_allsecondphase.m* looks at the phase cells over the entire second phase. 
 
-Try typing python3 Run_Network.py in the terminal and you should have success running this code.
+To run *RunPhaseAnalysis_indiviual.m*, you must input start and end times of the depolarization of each oscillation. Use *identify_oscillations.m* to create these arrays (see examples/*ExamplePhaseAnalysis.m* for help). 
 
-
-### Dependencies:
-The code depends on the following python packages: csvkit, collection, networkx, numpy, matplotlib.pyplot, scipy, easygui, pandas, python-math, tk, pyvis. **If you get an error with that looks like: Exception has occurred: ModuleNotFoundError: no module named '<modulename>'. Then that module must be downloaded using either Conda or pip. To download the module, go to the terminal and type (for example) 'conda install -c conda-forge easygui'.
-
-
-
+## First Responder Analysis 
+First responder analysis is very simple - you are just finding when cells reach half of their max-height during the first phase of insulin/calcium secretion. The cells that reach their half-max first are the first responders. To run first responder analysis correctly, you want to make sure that only the first phase is fed into the function. Then just run *RunFirstResponder.m*. For an example, see *examples/ExampleFirstResponder.m*
 
